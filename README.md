@@ -45,5 +45,5 @@ Pre-processing is performed according to [Ouyang et al.](https://github.com/chen
 Run `./script/test.sh` 
 
 ### Acknowledgement
-Thanks to the opensource works: [SSL-ALPNet](https://github.com/cheng-01037/Self-supervised-Fewshot-Medical-Image-Segmentation); [ADNet](https://github.com/sha168/ADNet); [QNet](https://github.com/ZJLAB-AMMI/Q-Net)
+Data is based the works: [SSL-ALPNet](https://github.com/cheng-01037/Self-supervised-Fewshot-Medical-Image-Segmentation); [ADNet](https://github.com/sha168/ADNet); [QNet](https://github.com/ZJLAB-AMMI/Q-Net)
 
