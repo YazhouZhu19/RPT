@@ -1,5 +1,5 @@
 # RPT
-Code for the paper： Few-Shot Medical Image Segmentation via a Region-enhanced Prototypical Transformer
+Official code for the paper： Few-Shot Medical Image Segmentation via a Region-enhanced Prototypical Transformer
 
 ![](./overview.png)
 
