@@ -59,11 +59,14 @@ class FewShotSeg(nn.Module):
         imgs_concat = torch.cat([torch.cat(way, dim=0) for way in supp_imgs]
                                 + [torch.cat(qry_imgs, dim=0), ], dim=0)
         img_fts, tao = self.encoder(imgs_concat)
-        supp_fts = [img_fts[dic][:self.n_ways * self.n_shots * supp_bs].view(  # B x Wa x Sh x C x H' x W'
-            supp_bs, self.n_ways, self.n_shots, -1, *img_fts[dic].shape[-2:]) for _, dic in enumerate(img_fts)]
-        qry_fts = [img_fts[dic][self.n_ways * self.n_shots * supp_bs:].view(  # B x N x C x H' x W'
-            qry_bs, self.n_queries, -1, *img_fts[dic].shape[-2:]) for _, dic in enumerate(img_fts)]
 
+        supp_fts = img_fts[:self.n_ways * self.n_shots * supp_bs].view(  # B x Wa x Sh x C x H' x W'
+            supp_bs, self.n_ways, self.n_shots, -1, *img_fts.shape[-2:])
+        
+        qry_fts = img_fts[self.n_ways * self.n_shots * supp_bs:].view(  # B x N x C x H' x W'
+            qry_bs, self.n_queries, -1, *img_fts.shape[-2:])
+
+        
         # Get threshold #
         self.t = tao[self.n_ways * self.n_shots * supp_bs:]  # t for query features
         self.thresh_pred = [self.t for _ in range(self.n_ways)]
@@ -72,47 +75,49 @@ class FewShotSeg(nn.Module):
         outputs = []
         for epi in range(supp_bs):
             # Partition the foreground object into N parts, the coarse support prototypes
-            fg_partition_prototypes = [[[self.compute_multiple_prototypes(
-                self.fg_num, supp_fts[n][[epi], way, shot], supp_mask[[epi], way, shot], self.fg_sampler)
-                         for shot in range(self.n_shots)] for way in range(self.n_ways)] for n in range(len(supp_fts))]
-
+            fg_partition_prototypes = [[self.compute_multiple_prototypes(
+                self.fg_num, supp_fts[[epi], way, shot], supp_mask[[epi], way, shot], self.fg_sampler)
+                         for shot in range(self.n_shots)] for way in range(self.n_ways)] 
+            
             # calculate coarse query prototype
-            supp_fts_ = [[[self.getFeatures(supp_fts[n][[epi], way, shot], supp_mask[[epi], way, shot])
-                           for shot in range(self.n_shots)] for way in range(self.n_ways)] for n in
-                         range(len(supp_fts))]
-            fg_prototypes = [self.getPrototype(supp_fts_[n]) for n in range(len(supp_fts))]  # the coarse foreground
-            qry_pred = [torch.stack(
-                [self.getPred(qry_fts[n][epi], fg_prototypes[n][way], self.thresh_pred[way])
-                 for way in range(self.n_ways)], dim=1) for n in range(len(qry_fts))]  # N x Wa x H' x W'
-            qry_prototype_coarse = [self.getFeatures(qry_fts[n][epi], qry_pred[n][epi]) for n in range(len(qry_fts))]
+            supp_fts_ = [[self.getFeatures(supp_fts[[epi], way, shot], supp_mask[[epi], way, shot])
+                           for shot in range(self.n_shots)] for way in range(self.n_ways)] 
+            
+            fg_prototypes = self.getPrototype(supp_fts_)  # the coarse foreground 
 
+            qry_pred = torch.stack(
+                [self.getPred(qry_fts[epi], fg_prototypes[way], self.thresh_pred[way])
+                 for way in range(self.n_ways)], dim=1)   # N x Wa x H' x W'
+                
+            qry_prototype_coarse = self.getFeatures(qry_fts[epi], qry_pred[epi]) 
 
             # # The first BATE block
             for i in range(self.iter):
-                fg_partition_prototypes = [[[self.BATE(fg_partition_prototypes[n][way][shot][epi], qry_prototype_coarse[n])
-                       for shot in range(self.n_shots)] for way in range(self.n_ways)] for n in range(len(supp_fts))]  
-                supp_proto = [[[torch.mean(fg_partition_prototypes[n][way][shot], dim=1) for shot in range(self.n_shots)]
-                          for way in range(self.n_ways)] for n in range(len(supp_fts))]  
+
+                fg_partition_prototypes = [[self.BATE(fg_partition_prototypes[way][shot][epi], qry_prototype_coarse)
+                       for shot in range(self.n_shots)] for way in range(self.n_ways)] 
+
+                supp_proto = [[torch.mean(fg_partition_prototypes[way][shot], dim=1) for shot in range(self.n_shots)]
+                          for way in range(self.n_ways)] 
+
                 # CQPC module
-                qry_pred_coarse = [torch.stack(
-                    [self.getPred(qry_fts[n][epi], supp_proto[n][way][epi], self.thresh_pred[way])
-                     for way in range(self.n_ways)], dim=1) for n in range(len(qry_fts))]
-                qry_prototype_coarse = [self.getFeatures(qry_fts[n][epi], qry_pred_coarse[n][epi])
-                                    for n in range(len(qry_fts))]
+                qry_pred_coarse = torch.stack(
+                    [self.getPred(qry_fts[epi], supp_proto[way][epi], self.thresh_pred[way])
+                     for way in range(self.n_ways)], dim=1) 
+
+                qry_prototype_coarse = self.getFeatures(qry_fts[epi], qry_pred_coarse[epi])
+                                    
 
             # Get query predictions #
-            qry_pred = [torch.stack(
-                [self.getPred(qry_fts[n][epi], supp_proto[n][way][epi], self.thresh_pred[way])
-                 for way in range(self.n_ways)], dim=1) for n in range(len(qry_fts))]  # N x Wa x H' x W'
+            qry_pred = torch.stack(
+                [self.getPred(qry_fts[epi], supp_proto[way][epi], self.thresh_pred[way])
+                 for way in range(self.n_ways)], dim=1)   # N x Wa x H' x W'
+            
 
             # Combine predictions of different feature maps #
-            qry_pred_up = [F.interpolate(qry_pred[n], size=img_size, mode='bilinear', align_corners=True)
-                           for n in range(len(qry_fts))]
-            pred = [self.alpha[n] * qry_pred_up[n] for n in range(len(qry_fts))]
-            preds = torch.sum(torch.stack(pred, dim=0), dim=0) / torch.sum(self.alpha)
+            qry_pred_up = F.interpolate(qry_pred, size=img_size, mode='bilinear', align_corners=True)
 
-            preds = torch.cat((1.0 - preds, preds), dim=1)
-
+            preds = torch.cat((1.0 - qry_pred_up, qry_pred_up), dim=1)
 
             outputs.append(preds)
 
@@ -193,8 +198,6 @@ class FewShotSeg(nn.Module):
 
         return fg_prototypes
 
-    
-
     def compute_multiple_prototypes(self, fg_num, sup_fts, sup_fg, sampler):
         """
 
@@ -265,6 +268,7 @@ class FewShotSeg(nn.Module):
     def BATE(self, fg_prototypes, qry_prototype_coarse):
 
         # S&W module
+     
         A = torch.mm(fg_prototypes, qry_prototype_coarse.t())
         kc = ((A.min() + A.mean())/2).floor()
         if A is not None:
@@ -277,4 +281,6 @@ class FewShotSeg(nn.Module):
         T = self.MLP(T)
 
         return T
+
+
 
