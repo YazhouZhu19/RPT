@@ -14,9 +14,9 @@ class Res101Encoder(nn.Module):
         # using pretrained model's weights
         if pretrained_weights == 'deeplabv3':
             self.pretrained_weights = torch.load(
-                ".../checkpoints/deeplabv3_resnet101_coco-586e9e4e.pth", map_location='cpu')
+                "/home/cs4007/data/zyz/RPT-main/checkpoints/deeplabv3_resnet101_coco-586e9e4e.pth", map_location='cpu')
         elif pretrained_weights == 'resnet101':
-            self.pretrained_weights = torch.load(".../checkpoints/resnet101-63fe2227.pth",
+            self.pretrained_weights = torch.load("/home/cs4007/data/zyz/RPT-main/checkpoints/resnet101-63fe2227.pth",
                                                  map_location='cpu')
         else:
             self.pretrained_weights = pretrained_weights
@@ -38,22 +38,19 @@ class Res101Encoder(nn.Module):
         x = self.backbone["conv1"](x)
         x = self.backbone["bn1"](x)
         x = self.backbone["relu"](x)
-        # features['down1'] = x
+
         x = self.backbone["maxpool"](x)
         x = self.backbone["layer1"](x)
         x = self.backbone["layer2"](x)
-        x = self.backbone["layer3"](x)  
-        features['down2'] = self.reduce1(x)  
+        x = self.backbone["layer3"](x)    
+        feature = self.reduce1(x)  # (2, 512, 64, 64)
         x = self.backbone["layer4"](x) 
-        features['down3'] = self.reduce2(x)  
-
-
         # feature map -> avgpool -> fc -> single value
         t = self.backbone["avgpool"](x)
         t = torch.flatten(t, 1)
         t = self.backbone["fc"](t)
         t = self.reduce1d(t)
-        return (features, t)
+        return (feature, t)
 
     def _init_weights(self):
         for m in self.modules():
