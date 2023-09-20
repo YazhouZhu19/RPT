@@ -27,6 +27,7 @@ class FewShotSeg(nn.Module):
         self.fg_num = 10  # number of foreground partitions
         self.MHA = MultiHeadAttention(n_head=3, d_model=512, d_k=512, d_v=512)
         self.MLP = MultiLayerPerceptron(dim=512, mlp_dim=1024)
+        self.layer_norm = nn.LayerNorm(512)
 
     def forward(self, supp_imgs, supp_mask, qry_imgs, train=False, t_loss_scaler=1, n_iters=20):
         """
@@ -276,6 +277,7 @@ class FewShotSeg(nn.Module):
             S[A < kc] = -10000.0
         A = torch.softmax((A+S), dim=0)
         A = torch.mm(A, qry_prototype_coarse)
+        A = self.layer_norm(A + fg_prototypes)
         # rest Transformer operation
         T = self.MHA(A.unsqueeze(0), A.unsqueeze(0), A.unsqueeze(0))
         T = self.MLP(T)
