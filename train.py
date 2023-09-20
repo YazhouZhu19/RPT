@@ -13,7 +13,7 @@ from models.fewshot import FewShotSeg
 from dataloaders.datasets import TrainDataset as TrainDataset
 from utils import *
 from config import ex
-from boundary_loss import BoundaryLoss
+from losses import *
 
 
 @ex.automain
