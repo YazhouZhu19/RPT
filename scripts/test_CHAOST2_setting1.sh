@@ -1,10 +1,9 @@
 #!/bin/bash
-GPUID1=1
+GPUID1=0
 export CUDA_VISIBLE_DEVICES=$GPUID1
 
 ###### Shared configs ######
 DATASET='CHAOST2'
-#DATASET='CMR'
 NWORKER=16
 RUNS=1
 ALL_EV=(0 1 2 3 4) # 5-fold cross validation (0, 1, 2, 3, 4)
@@ -34,7 +33,7 @@ do
   for SUPP_IDX in "${ALL_SUPP[@]}"
   do
     # RELOAD_PATH='please feed the absolute path to the trained weights here' # path to the reloaded model
-    RELOAD_MODEL_PATH=".../exps_on_CHAOST2_fewshot/RPT_train_CHAOST2_cv${EVAL_FOLD}/1/snapshots/30000.pth"
+    RELOAD_MODEL_PATH=".../exps_on_CHAOST2_fewshot_setting1/RPT_train_CHAOST2_cv${EVAL_FOLD}/1/snapshots/30000.pth"
     python3 test.py with \
     mode="test" \
     dataset=$DATASET \
