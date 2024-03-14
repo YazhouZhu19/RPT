@@ -9,7 +9,6 @@ RUNS=1
 ALL_EV=(0 1 2 3 4) # 5-fold cross validation (0, 1, 2, 3, 4)
 TEST_LABEL=[1,2,3,4]
 EXCLUDE_LABEL=[1,2,3,4]
-TEST=1234  # flag for folder name, '1234' for not excluding any labels,  '14' for excluding label [2,3], '23' for excluding label [1,4]
 USE_GT=False
 ###### Training configs ######
 NSTEP=40000
