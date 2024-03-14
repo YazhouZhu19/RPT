@@ -28,8 +28,17 @@ torchvision=0.11.2
 tqdm==4.62.3
 ```
 
-
 Pre-processing is performed according to [Ouyang et al.](https://github.com/cheng-01037/Self-supervised-Fewshot-Medical-Image-Segmentation/tree/2f2a22b74890cb9ad5e56ac234ea02b9f1c7a535) and we follow the procedure on their github repository.
+
+
+The trained models can be downloaded by:
+1) [trained for CHAOS under Setting 1](https://drive.google.com/drive/folders/1gp2Hp4EPBOKwIbVN4l3QyfWeAN8l4jJj?usp=drive_link)
+2) [trained for CHAOS under Setting 2](https://drive.google.com/drive/folders/1RQ0B0XQfOIwoO-7R2sUG7h7dea6v4TJa?usp=drive_link)
+3) [trained for SABS under Setting 1](https://drive.google.com/drive/folders/1xXK8_1fQVQyRoL1N49RN7ZW3H10E-Y5-?usp=drive_link)
+4) [trained for SABS under Setting 2](https://drive.google.com/drive/folders/1EZamwmnh8DkJ51J3VJbC0Mn2vhdE-cGt?usp=drive_link)
+5) [trained for CMR](https://drive.google.com/drive/folders/1czW-1mMOdaouI5PBPBNXI8cLbt9jJ2xq?usp=drive_link)
+
+
 
 The pre-processed data and supervoxels can be downloaded by:
 1) [Pre-processed CHAOS-T2 data and supervoxels](https://drive.google.com/drive/folders/1elxzn67Hhe0m1PvjjwLGls6QbkIQr1m1?usp=share_link)
