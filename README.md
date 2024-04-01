@@ -55,3 +55,15 @@ Run `./script/test.sh`
 ### Acknowledgement
 Our code is based the works: [SSL-ALPNet](https://github.com/cheng-01037/Self-supervised-Fewshot-Medical-Image-Segmentation), [ADNet](https://github.com/sha168/ADNet) and [QNet](https://github.com/ZJLAB-AMMI/Q-Net)
 
+## Citation
+```bibtex
+@inproceedings{zhu2023few,
+  title={Few-Shot Medical Image Segmentation via a Region-Enhanced Prototypical Transformer},
+  author={Zhu, Yazhou and Wang, Shidong and Xin, Tong and Zhang, Haofeng},
+  booktitle={International Conference on Medical Image Computing and Computer-Assisted Intervention},
+  pages={271--280},
+  year={2023},
+  organization={Springer}
+}
+```
+
