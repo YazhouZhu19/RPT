@@ -60,7 +60,6 @@ abd_ct_img_spleen = abd_ct_img[idx]
 
 abd_ct_spleen_gt_show = abd_ct_spleen_gt[14]*200
 abd_ct_img_show = abd_ct_img_spleen[14]
-abd_ct_spleen_show = cv2.erode(abd_ct_spleen[14] * 200, np.ones((1, 1), np.uint8), iterations=1)
 
 abd_ct_spleen_spt = abd_ct_spleen_gt[8]*200
 abd_ct_img_spt = abd_ct_img_spleen[8]
@@ -81,7 +80,6 @@ abd_ct_img_rk = abd_ct_img[idx]
 
 abd_ct_rk_gt_show = abd_ct_rk_gt[18]*200
 abd_ct_img_show = abd_ct_img_rk[18]
-abd_ct_rk_show = cv2.erode(abd_ct_rk[18] * 200, np.ones((2, 2), np.uint8), iterations=3)
 
 abd_ct_rk_spt = abd_ct_rk_gt[10]*200
 abd_ct_img_spt = abd_ct_img_rk[10]
@@ -102,8 +100,6 @@ abd_ct_img_lk = abd_ct_img[idx]
 
 abd_ct_lk_gt_show = abd_ct_lk_gt[17]*200
 abd_ct_img_show = abd_ct_img_lk[17]
-abd_ct_lk_show = cv2.erode(abd_ct_lk[17] * 200, np.ones((1, 1), np.uint8), iterations=5)
-# abd_ct_lk_show = abd_ct_lk[17]*200
 
 abd_ct_lk_spt = abd_ct_lk_gt[8]*200
 abd_ct_img_spt = abd_ct_img_lk[8]
