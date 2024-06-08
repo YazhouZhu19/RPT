@@ -16,13 +16,13 @@ abd_ct_pth = './data/Abd_CT/'
 abd_mri_pth = './data/Abd_MRI/'
 cmr_pth = './data/CMR/'
 
-abd_mri_gt_pth = os.path.join(abd_mri_pth, 'Abd_MRI_x_GT.nii.gz')
-abd_mri_img_pth = os.path.join(abd_mri_pth, 'Abd_MRI_x.nii.gz')
+abd_mri_gt_pth = os.path.join(abd_mri_pth, 'Abd_MRI_x_GT.nii.gz')                 # the ground truth mask, x is case number  
+abd_mri_img_pth = os.path.join(abd_mri_pth, 'Abd_MRI_x.nii.gz')                   # the image 
 
-abd_mri_liver_pth = os.path.join(abd_mri_pth, 'prediction_x_LIVER.nii.gz')
-abd_mri_spleen_pth = os.path.join(abd_mri_pth, 'prediction_x_SPLEEN.nii.gz')
-abd_mri_rk_pth = os.path.join(abd_mri_pth, 'prediction_x_RK.nii.gz')
-abd_mri_lk_pth = os.path.join(abd_mri_pth, 'prediction_x_LK.nii.gz')
+abd_mri_liver_pth = os.path.join(abd_mri_pth, 'prediction_x_LIVER.nii.gz')        # the liver prediction of case x 
+abd_mri_spleen_pth = os.path.join(abd_mri_pth, 'prediction_x_SPLEEN.nii.gz')      # the spleen prediction of case x 
+abd_mri_rk_pth = os.path.join(abd_mri_pth, 'prediction_x_RK.nii.gz')              # the right kidney prediction of case x 
+abd_mri_lk_pth = os.path.join(abd_mri_pth, 'prediction_x_LK.nii.gz')              # the left kidney prediction of case x 
 
 abd_mri_gt = itk.GetArrayFromImage(itk.ReadImage(abd_mri_gt_pth))  
 abd_mri_img = itk.GetArrayFromImage(itk.ReadImage(abd_mri_img_pth))  
@@ -39,19 +39,19 @@ idx = abd_mri_liver_gt.sum(axis=(1, 2)) > 0
 abd_mri_liver_gt = abd_mri_liver_gt[idx]
 abd_mri_img_liver = abd_mri_img[idx]
 
-abd_mri_liver_gt_show = abd_mri_liver_gt[11] * 200
+abd_mri_liver_gt_show = abd_mri_liver_gt[11] * 200    # choose the 11th slice of case x to illustrate, you also can choose other slices
 abd_mri_img_show = abd_mri_img_liver[11] / 4.5
 abd_mri_liver_show = abd_mri_liver[11] * 200
 
-abd_mri_liver_spt = abd_mri_liver_gt[5] * 200
+abd_mri_liver_spt = abd_mri_liver_gt[5] * 200    # choose the 5th slice of case x as support image.
 abd_mri_img_spt = abd_mri_img_liver[5] / 4.5
 
-cv2.imwrite("./data/Abd_MRI/abd_mri_liver_gt.png", abd_mri_liver_gt_show)
-cv2.imwrite("./data/Abd_MRI/abd_mri_liver_img.png", abd_mri_img_show)
-cv2.imwrite("./data/Abd_MRI/abd_mri_liver.png", abd_mri_liver_show)
+cv2.imwrite("./data/Abd_MRI/abd_mri_liver_gt.png", abd_mri_liver_gt_show)   # the ground truth 
+cv2.imwrite("./data/Abd_MRI/abd_mri_liver_img.png", abd_mri_img_show)       # the image
+cv2.imwrite("./data/Abd_MRI/abd_mri_liver.png", abd_mri_liver_show)         # the liver prediction 
 
-cv2.imwrite("./data/Abd_MRI/abd_mri_liver_spt.png", abd_mri_liver_spt)
-cv2.imwrite("./data/Abd_MRI/abd_mri_liver_img_spt.png", abd_mri_img_spt)
+cv2.imwrite("./data/Abd_MRI/abd_mri_liver_spt.png", abd_mri_liver_spt)      # the liver mask of support image 
+cv2.imwrite("./data/Abd_MRI/abd_mri_liver_img_spt.png", abd_mri_img_spt)    # the support image 
 
 # **********************************spleen*********************************
 abd_mri_spleen = itk.GetArrayFromImage(itk.ReadImage(abd_mri_spleen_pth))
