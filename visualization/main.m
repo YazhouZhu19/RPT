@@ -1,7 +1,7 @@
 % the pth of mask
-label = imread('.../abd_mr2ct50_spleen_gt.png'); 
+label = imread('.../cmr_lvbp_gt.png');    
 % the pth of raw image
-im = imread('.../abd_mr2ct50_spleen_img.png');   
+im = imread('.../cmr_lvbp_img.png');   
 
 color1 = [1,0,0; 0,1,0; 0,0,1; 1,1,0; 0,1,1];
 alpha1 = 0.1;
@@ -20,7 +20,8 @@ color4 = jet; % matlab自带
 alpha4 = 0.5;
 colorimg4 = drawlabel2image(im,label,color4,alpha4);
 
-imwrite(colorimg3, './data_cdfs/cross_modal/ablation/mr2ct/6/masked/abd_mr2ct50_spleen_gt_masked.png');
+% the pth of masked image
+imwrite(colorimg3, '.../cmr_masked_gt.png');
 
 % 显示
 figure
