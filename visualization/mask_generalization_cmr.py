@@ -37,14 +37,14 @@ cmr_lvbp_gt = cmr_lvbp_gt[idx]
 cmr_img_lvbp = cmr_img[idx]
 
 cmr_lvbp_gt_show = cmr_lvbp_gt[4]*200                                   # choose the 4th slice of case x to illustrate, you also can choose other slices
-cmr_img_show = cmr_img_lvbp[4] / 4.5
+cmr_img_show_1 = cmr_img_lvbp[4] / 4.5
 
 cmr_lvbp_spt = cmr_lvbp_gt[2]*200                                       # choose the 2th slice of case x as support image
 cmr_img_spt = cmr_img_lvbp[2] / 4.5
 
 
 cv2.imwrite("./data/CMR/cmr_lvbp_gt.png", cmr_lvbp_gt_show)             # ground truth 
-cv2.imwrite("./data/CMR/cmr_lvbp_img.png", cmr_img_show)                # the image 
+cv2.imwrite("./data/CMR/cmr_lvbp_img.png", cmr_img_show_1)              # the image 
 cv2.imwrite("./data/CMR/cmr_lvbp.png", cmr_img_lvbp_show)               # the lvbp prediction 
 
 cv2.imwrite("./data/CMR/cmr_lvbp_spt.png", cmr_lvbp_spt)                # the lvbp mask of support image 
@@ -58,13 +58,13 @@ cmr_lvmyo_gt = cmr_lvmyo_gt[idx]
 cmr_img_lvmyo = cmr_img[idx]
 
 cmr_lvmyo_gt_show = cmr_lvmyo_gt[6]*200
-cmr_img_show = cmr_img_lvmyo[6] / 4.5
+cmr_img_show_2 = cmr_img_lvmyo[6] / 4.5
 
 cmr_lvmyo_spt = cmr_lvmyo_gt[3]*200
 cmr_img_spt = cmr_img_lvmyo[3] / 4.5
 
 cv2.imwrite("./data/CMR/cmr_lvmyo_gt.png", cmr_lvmyo_gt_show)
-cv2.imwrite("./data/CMR/cmr_lvmyo_img.png", cmr_img_show)
+cv2.imwrite("./data/CMR/cmr_lvmyo_img.png", cmr_img_show_2)
 cv2.imwrite("./data/CMR/cmr_lvmyo.png", cmr_img_lvmyo_show)
 
 cv2.imwrite("./data/CMR/cmr_lvmyo_spt.png", cmr_lvmyo_spt)
@@ -78,13 +78,13 @@ cmr_rv_gt = cmr_rv_gt[idx]
 cmr_img_rv = cmr_img[idx]
 
 cmr_rv_gt_show = cmr_rv_gt[2]*200
-cmr_img_show = cmr_img_rv[2] / 4.5
+cmr_img_show_3 = cmr_img_rv[2] / 4.5
 
 cmr_rv_spt = cmr_rv_gt[5]*200
 cmr_img_spt = cmr_img_rv[5] / 4.5
 
 cv2.imwrite("./data/CMR/cmr_rv_gt.png", cmr_rv_gt_show)
-cv2.imwrite("./data/CMR/cmr_rv_img.png", cmr_img_show)
+cv2.imwrite("./data/CMR/cmr_rv_img.png", cmr_img_show_3)
 cv2.imwrite("./data/CMR/cmr_rv.png", cmr_img_rv_show)
 
 cv2.imwrite("./data/CMR/cmr_rv_spt.png", cmr_rv_spt)
