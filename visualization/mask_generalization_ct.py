@@ -23,8 +23,8 @@ abd_ct_rk_pth = os.path.join(abd_ct_pth, 'prediction_x_RK.nii.gz')          # th
 abd_ct_lk_pth = os.path.join(abd_ct_pth, 'prediction_x_LK.nii.gz')          # the left kidney prediction of case x
 
 
-abd_ct_gt = itk.GetArrayFromImage(itk.ReadImage(abd_ct_gt_pth))  # (100, 257, 257)
-abd_ct_img = itk.GetArrayFromImage(itk.ReadImage(abd_ct_img_pth))  # (100, 257, 257)
+abd_ct_gt = itk.GetArrayFromImage(itk.ReadImage(abd_ct_gt_pth)) 
+abd_ct_img = itk.GetArrayFromImage(itk.ReadImage(abd_ct_img_pth))  
 
 abd_ct_gt[abd_ct_gt == 200] = 1
 abd_ct_gt[abd_ct_gt == 500] = 2
@@ -45,11 +45,11 @@ abd_ct_liver_spt = abd_ct_liver_gt[13] * 200   # choose the 13th slice of case x
 abd_ct_img_spt = abd_ct_img_liver[13]
 
 cv2.imwrite("./data/Abd_CT/abd_ct_liver_gt.png", abd_ct_liver_gt_show)    # ground truth 
-cv2.imwrite("./data/Abd_CT/abd_ct_liver_img.png", abd_ct_img_show)        # 
-cv2.imwrite("./data/Abd_CT/abd_ct_liver.png", abd_ct_liver_show)
+cv2.imwrite("./data/Abd_CT/abd_ct_liver_img.png", abd_ct_img_show)        # the image 
+cv2.imwrite("./data/Abd_CT/abd_ct_liver.png", abd_ct_liver_show)          # the liver prediction  
 
-cv2.imwrite("./data/Abd_CT/abd_ct_liver_spt.png", abd_ct_liver_spt)
-cv2.imwrite("./data/Abd_CT/abd_ct_liver_img_spt.png", abd_ct_img_spt)
+cv2.imwrite("./data/Abd_CT/abd_ct_liver_spt.png", abd_ct_liver_spt)       # the liver mask of support image
+cv2.imwrite("./data/Abd_CT/abd_ct_liver_img_spt.png", abd_ct_img_spt)     # the support image 
 
 # **********************************spleen*********************************
 abd_ct_spleen = itk.GetArrayFromImage(itk.ReadImage(abd_ct_spleen_pth))
