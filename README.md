@@ -3,6 +3,7 @@
 
 <h1>Few-Shot Medical Image Segmentation via a Region-enhanced Prototypical Transformer </h1>
 
+</div>
 
 <p align="center"><img width="85%" src="./overview.png" />
 
